@@ -8,7 +8,7 @@ function preload(){
 	game.load.image('sky', 'assets/sky.png');
 	game.load.image('ground', 'assets/ground.png');
 	game.load.image('star', 'assets/star.png');
-	game.load.spritesheet('dude', 'assets/player-sprite.png', 32, 56);
+	game.load.spritesheet('dude', 'assets/player-sprite.png', 32, 56, 11);
 }
 function create() {
 	// game.add.sprite(0, 0, 'star');
@@ -30,7 +30,7 @@ function create() {
 	platforms = game.add.group();
 
 	// We will enable physics for any object that is created in this group
-	platforms.enableBody = true;
+	platforms.enableBody = true;	
 
 	// Here we create the ground.
 	var ground = platforms.create(0, game.world.height - 32, 'ground');
@@ -49,21 +49,22 @@ function create() {
 	
 
 	// The player and its settings
-	player = game.add.sprite(400, 450, 'dude');
+	player = game.add.sprite(400, 500, 'dude');
 
 	// We need to enable physics on the player 
 	game.physics.arcade.enable(player);
 
-	player.body.setSize(32, 56, 0, -9);
+	player.body.setSize(32, 55, 0, -7);
 
 	// Player physics properties. Giv the little guy a slight bounce.
 	player.body.bounce.y = 0.2;
-	player.body.gravity.y = 500;
-	player.body.colliderWorldBounds = true;
+	player.body.gravity.y = 600;
+	player.body.colliderWorldBounds 
 
 	// Our two animations, walking left and right
 	player.animations.add('left', [0, 1, 2, 3, 4, 5], 10, true);
 	player.animations.add('right', [6, 7, 8, 9, 10], 10, true);
+	// player.animations.add('still', [11], 10, true);
 
 }
 function update() {
@@ -84,7 +85,13 @@ function update() {
 		// Move to the right
 		player.body.velocity.x = +150;
 		player.animations.play('right');
-	}else if(cursors.up.isDown){
-		player.body.velocity.y = +150;
+	}else {
+		player.animations.stop();
+		player.frame = 11;
+	}
+
+	// Allow the playdf to jump if they are touching the ground
+	if (cursors.up.isDown && player.body.touching.down && hitPlatform) {
+		player.body.velocity.y = -450;
 	}
 }
