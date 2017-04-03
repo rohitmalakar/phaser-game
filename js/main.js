@@ -20,6 +20,9 @@ var scoreText;
 
 var direction = 0;
 
+var counter = 0;
+var counterText = 0;
+
 function create() {
 	// game.add.sprite(0, 0, 'star');
 
@@ -95,7 +98,13 @@ function create() {
     }
 
     // sore 
-	scoreText = game.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
+	scoreText = game.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#FFF' });
+
+    // timer
+    // timer = game.add.text(670, 16, 'time: 0', { fontSize: '32px', fill: '#FFF', align: 'right' });
+    counterText = game.add.text(670, 16, 'Time: 0', { font: "32px Arial", fill: "#ffffff", align: "right" });
+    // text.anchor.setTo(0.5, 0.5);
+    game.time.events.loop(Phaser.Timer.SECOND, updateCounter, this);
 }
 function update() {
 	// Collide the player and the stars with the platforms 
@@ -151,4 +160,14 @@ function collectStar (player, star) {
     //  Add and update the score
     score += 10;
     scoreText.text = 'Score: ' + score;
+
+    
+}
+
+function updateCounter() {
+
+    counter++;
+
+    counterText.setText('Time: ' + counter);
+
 }
